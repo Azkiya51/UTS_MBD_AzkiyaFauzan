@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_AzkiyaFauzan
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "22102:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./scripts:/scripts
+    networks:
+      - db_net
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_NAMA
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - "44102:80"
+    depends_on:
+      - postgres
+    networks:
+      - db_net
+
+volumes:
+  pg_data:
+
+networks:
+  db_net:
